@@ -1,0 +1,9 @@
+
+{
+  "name": "Zenith Portfolio",
+  "description": "A futuristic, bento-grid styled personal portfolio with fluid animations and a Gemini-powered AI assistant.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
