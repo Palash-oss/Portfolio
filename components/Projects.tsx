@@ -27,9 +27,9 @@ const projects: Project[] = [
     color: "#3b82f6",
     tags: ["Python", "Pinecone", "RAG","LLMs"],
     images: [
-      "/public/image1.png",
-      "/public/image2.png",
-      "/public/image3.png"
+      "/image1.png",
+      "/image2.png",
+      "/image3.png"
     ],
     githubLink: "https://github.com/Palash-oss/CHATBOT"
   },
@@ -40,7 +40,7 @@ const projects: Project[] = [
     category: "WEB ARCHITECTURE",
     color: "#10b981",
     tags: ["React", "Go", "WebSockets"],
-    images: ["/public/sentiment-1.png", "/public/sentiment-2.png", "/public/sentiment-3.png"],
+    images: ["/sentiment-1.png", "/sentiment-2.png", "/sentiment-3.png"],
     githubLink: "https://github.com/Palash-oss/Product-review-analysis"
   },
   {
@@ -50,7 +50,7 @@ const projects: Project[] = [
     category: "AUTOMATION",
     color: "#f59e0b",
     tags: ["GPT-4o", "Node.js", "AI Agents"],
-    images: ["/public/rexy-2.png", "/public/rexy-1.png"],
+    images: ["/rexy-2.png", "/rexy-1.png"],
     githubLink: "#"
   }
 ];
