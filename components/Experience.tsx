@@ -6,27 +6,27 @@ import { ArrowRight, ChevronRight, MapPin, Sparkles } from 'lucide-react';
 const milestones = [
   {
     phase: "01",
-    title: "Project Expansion",
-    context: "CURRENT FOCUS",
-    period: "2024 - 2025",
-    desc: "Scaling personal projects from simple scripts to full-scale AI applications. Deep-diving into RAG (Retrieval Augmented Generation) and high-latency web performance optimizations.",
-    highlights: ["Llama-3 Integration", "Vector Databases", "Framer Motion"]
+    title: "AI Ecosystems",
+    context: "ADVANCED PLATFORMS",
+    period: "2025 - 2026",
+    desc: "Building production-grade AI platforms like VIDYA and EcoKernel. Deep-diving into RAG, LLM orchestration (Gemini/Groq), meta-heuristics for multi-objective optimization, and multi-role dashboards.",
+    highlights: ["LLMs/RAG", "FastAPI", "React 18"]
   },
   {
     phase: "02",
-    title: "Technical Specialization",
-    context: "AI/ML MASTERY",
-    period: "2023 - 2024",
-    desc: "Intensive focus on Deep Learning fundamentals. Built various vision and NLP models to understand the math behind modern AI before moving to engineering.",
-    highlights: ["PyTorch", "Computer Vision", "TensorFlow"]
+    title: "Full-Stack Scale",
+    context: "WEB ARCHITECTURE",
+    period: "2024 - 2025",
+    desc: "Developing complex, data-heavy systems such as Sentiment Analysis Platforms and dynamic real-time user interfaces. Emphasizing microservices, socket connections, and database management.",
+    highlights: ["Go", "React", "MongoDB"]
   },
   {
     phase: "03",
-    title: "Foundation Era",
-    context: "WEB CORE",
-    period: "2021 - 2023",
-    desc: "Mastered the core pillars of the web. Moving from static HTML/CSS to complex React applications. Developing an eye for high-end UI/UX and pixel-perfect layouts.",
-    highlights: ["Javascript ES6+", "React Ecosystem", "Tailwind CSS"]
+    title: "AI/ML Base",
+    context: "MODELS & VISION",
+    period: "2023 - 2024",
+    desc: "Intensive focus on Deep Learning fundamentals. Built various vision, NLP, and OCR models (like PaddleOCR) to understand the math behind modern AI before moving to engineering.",
+    highlights: ["Python", "Computer Vision", "TensorFlow"]
   }
 ];
 
