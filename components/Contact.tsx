@@ -1,56 +1,154 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, ArrowRight } from 'lucide-react';
+import { Send, Copy, Check, Mail, ArrowUpRight, Sparkles } from 'lucide-react';
 
 export const Contact: React.FC = () => {
+  const [copied, setCopied] = useState(false);
+  const [formSent, setFormSent] = useState(false);
+
+  const email = "palashpathare@gmail.com";
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSent(true);
+    setTimeout(() => setFormSent(false), 4000);
+  };
+
+  const socials = [
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/palash-pathare-53260b28a' },
+    { name: 'GitHub', url: 'https://github.com/Palash-oss' },
+    { name: 'Instagram', url: '#' },
+    { name: 'X.com', url: '#' },
+  ];
+
   return (
-    <div className="py-20 border-t border-white/5">
-      <div className="flex flex-col md:flex-row gap-20">
-        <div className="md:w-1/2">
-          <span className="mono text-xs text-blue-500 font-bold uppercase tracking-[0.4em] mb-6 block">Ready to start?</span>
-          <h2 className="text-7xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-10">
-            Let's Make <br /> <span className="hero-outline">Impact.</span>
+    <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/10 max-w-7xl mx-auto">
+      <div className="grid lg:grid-cols-12 gap-16">
+        {/* Left Info Column */}
+        <div className="lg:col-span-6 space-y-8">
+          <div className="flex items-center gap-2 mono text-xs font-black text-gray-400 uppercase tracking-widest">
+            <Sparkles size={16} className="text-white" /> Init Connection
+          </div>
+
+          <h2 className="font-display text-5xl sm:text-7xl font-black uppercase tracking-tighter text-white leading-none">
+            LET'S MAKE <br />
+            <span className="hero-outline">IMPACT.</span>
           </h2>
-          <div className="space-y-4">
-            <p className="text-gray-400 max-w-sm text-lg">
-              Open for collaboration on AI/ML projects and creative web experiences.
-            </p>
-            <a href="mailto:palashpathare@gmail.com" className="text-3xl font-bold hover:text-blue-500 transition-colors underline decoration-white/10 underline-offset-8 break-all">
-              palashpathare@gmail.com
-            </a>
+
+          <p className="text-gray-300 text-lg sm:text-xl font-light leading-relaxed max-w-md">
+            Open for engineering collaboration on AI/ML projects, neural architectures, and cutting-edge web platforms.
+          </p>
+
+          {/* Interactive Email Copy Card */}
+          <div className="pt-4 space-y-3">
+            <span className="mono text-xs text-gray-500 uppercase font-bold tracking-widest block">Direct Communications</span>
+            <div className="inline-flex items-center gap-4 p-4 rounded-2xl glass-card border border-white/10 hover:border-white/40 transition-all duration-300">
+              <Mail size={22} className="text-white" />
+              <a
+                href={`mailto:${email}`}
+                className="font-display font-bold text-xl sm:text-2xl text-white hover:text-gray-300 transition-colors"
+                data-cursor="EMAIL"
+              >
+                {email}
+              </a>
+              <button
+                onClick={handleCopyEmail}
+                className="p-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white transition-all ml-2"
+                title="Copy Email Address"
+                data-cursor="COPY"
+              >
+                {copied ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} />}
+              </button>
+            </div>
+            {copied && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mono text-xs text-emerald-400 font-bold tracking-wider"
+              >
+                ✓ Copied email to clipboard!
+              </motion.p>
+            )}
           </div>
         </div>
 
-        <div className="md:w-1/2 flex flex-col justify-between">
-          <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
-            <div className="group relative">
-              <input type="text" placeholder="YOUR NAME" className="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-white transition-colors font-bold uppercase tracking-widest text-sm" />
+        {/* Right Form Column */}
+        <div className="lg:col-span-6 flex flex-col justify-between space-y-12">
+          <form onSubmit={handleSubmit} className="space-y-8 glass-card p-8 rounded-3xl border border-white/10 relative overflow-hidden">
+            <div className="space-y-2">
+              <label className="mono text-xs text-gray-400 font-bold uppercase tracking-widest block">IDENTIFIER</label>
+              <input
+                type="text"
+                required
+                placeholder="YOUR NAME"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 outline-none focus:border-white text-white font-display text-base tracking-wide transition-all focus:ring-1 focus:ring-white/20"
+              />
             </div>
-            <div className="group relative">
-              <input type="email" placeholder="EMAIL ADDRESS" className="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-white transition-colors font-bold uppercase tracking-widest text-sm" />
+
+            <div className="space-y-2">
+              <label className="mono text-xs text-gray-400 font-bold uppercase tracking-widest block">COORDINATES</label>
+              <input
+                type="email"
+                required
+                placeholder="EMAIL ADDRESS"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 outline-none focus:border-white text-white font-display text-base tracking-wide transition-all focus:ring-1 focus:ring-white/20"
+              />
             </div>
-            <div className="group relative">
-              <textarea placeholder="TELL ME ABOUT YOUR PROJECT" rows={3} className="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-white transition-colors font-bold uppercase tracking-widest text-sm resize-none" />
+
+            <div className="space-y-2">
+              <label className="mono text-xs text-gray-400 font-bold uppercase tracking-widest block">TRANSMISSION</label>
+              <textarea
+                required
+                rows={4}
+                placeholder="TELL ME ABOUT YOUR PROJECT OR INQUIRY..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 outline-none focus:border-white text-white font-display text-base tracking-wide transition-all focus:ring-1 focus:ring-white/20 resize-none"
+              />
             </div>
-            
-            <button className="flex items-center gap-4 group">
-              <span className="text-3xl font-black uppercase tracking-tighter group-hover:text-blue-500 transition-colors">Send Inquiry</span>
-              <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                <Send size={24} />
-              </div>
+
+            <button
+              type="submit"
+              className="w-full py-5 rounded-xl bg-white text-black hover:bg-zinc-200 font-display font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all transform hover:scale-[1.02] active:scale-95 group"
+              data-cursor="SEND"
+            >
+              <span>SEND INQUIRY</span>
+              <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>
+
+            {formSent && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 mono text-xs font-bold text-center"
+              >
+                ✓ Message transmitted successfully!
+              </motion.div>
+            )}
           </form>
-          
-          <div className="mt-20 flex gap-10">
-            {['Instagram', 'Dribbble', 'LinkedIn', 'X.com'].map((platform) => (
-              <a key={platform} href="#" className="mono text-[10px] uppercase font-bold tracking-widest text-white/20 hover:text-white transition-colors">
-                {platform}
+
+          {/* Social Links Row */}
+          <div className="flex flex-wrap items-center gap-6 pt-4">
+            {socials.map((platform) => (
+              <a
+                key={platform.name}
+                href={platform.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mono text-xs uppercase font-bold tracking-widest text-gray-400 hover:text-white flex items-center gap-1 transition-colors group"
+                data-cursor="LINK"
+              >
+                <span>{platform.name}</span>
+                <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

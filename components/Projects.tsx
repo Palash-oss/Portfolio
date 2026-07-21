@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Github } from 'lucide-react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Github, Maximize2, X, ChevronLeft, ChevronRight, Sparkles, ExternalLink } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -17,9 +19,9 @@ interface Project {
   description: string;
   category: string;
   tags: string[];
-  color: string;
   images: string[];
   githubLink: string;
+  liveLink?: string;
 }
 
 const projects: Project[] = [
@@ -28,8 +30,7 @@ const projects: Project[] = [
     title: "VIDYA - Academic Chatbot",
     description: "An intelligent academic assistant for CBSE students (Grade 1-4) combining context-aware AI tutoring powered by Gemini & Groq, adaptive assessments, handwriting analysis via PaddleOCR, and knowledge graph visualization. Features multi-role dashboards (student, parent, teacher), persistent chat sessions, and the COMPASS adaptive learning framework for personalized learning paths.",
     category: "AI EDUCATION",
-    color: "#3b82f6",
-    tags: ["React", "Python", "Firebase", "MongoDB"],
+    tags: ["React", "Python", "Gemini AI", "PaddleOCR", "Firebase", "MongoDB"],
     images: [
       "/vidya-1.png",
       "/vidya-2.png",
@@ -40,27 +41,36 @@ const projects: Project[] = [
   },
   {
     id: "02",
-    title: "Sentiment Analysis Platform",
-    description: "A comprehensive full-stack platform for analyzing sentiment from customer reviews, product feedback, and user comments.",
-    category: "WEB ARCHITECTURE",
-    color: "#10b981",
-    tags: ["React", "Go", "WebSockets"],
-    images: ["/sentiment-1.png", "/sentiment-2.png", "/sentiment-3.png"],
-    githubLink: "https://github.com/Palash-oss/Product-review-analysis"
+    title: "CodeBase X-Ray — Static Analysis Platform",
+    description: "An advanced, 100% private AST-driven source code analysis and architecture refactoring platform. Parses local repositories or public GitHub URLs to construct evidence-based System Design Topologies, interactive Refactoring Simulations, 1-Click Codebase Auto-Fixers, and exportable Mermaid.js architecture diagrams.",
+    category: "STATIC ANALYSIS & AST",
+    tags: ["React", "Node.js", "AST Analysis", "Mermaid.js", "WebSockets", "Vercel"],
+    images: [
+      "/codebase-xray-1.png",
+      "/codebase-xray-2.png",
+      "/codebase-xray-3.png",
+      "/codebase-xray-4.png"
+    ],
+    githubLink: "https://github.com/Palash-oss/Codebase",
+    liveLink: "https://codebase-eight-murex.vercel.app/"
   },
   {
     id: "03",
-    title: "ECOKERNEL - Green Logistics Engine",
-    description: "An AI-driven supply chain orchestration engine addressing 11% of global greenhouse emissions. Integrates a predictive RNN/LSTM module for demand forecasting, a prescriptive Multi-Objective Optimizer solving Green Vehicle Routing Problems (GVRP), and an interactive decision interface visualizing the Pareto Front. Optimizes routes considering vehicle fuel types, traffic dynamics, and multi-modal transport shifting.",
-    category: "SUSTAINABILITY",
-    color: "#10b981",
-    tags: ["Python", "FastAPI", "React", "Meta-heuristics"],
-    images: ["/ecokernel-1.png", "/ecokernel-2.png", "/ecokernel-3.png", "/ecokernel-4.png", "/ecokernel-5.png"],
-    githubLink: "https://github.com/flashrod/ecokernel"
+    title: "GitHub Automation Bot 🤖",
+    description: "A production-grade, highly responsive GitHub automation bot built with Next.js 14 (App Router), Auth.js, Prisma ORM, Neon serverless Postgres, Octokit REST/Webhooks, and Slack Block Kit. Features an idempotent webhook engine, dynamic rules binder, real-time live polling dashboard, and interactive Slack writeback cards.",
+    category: "DEVOPS & AUTOMATION",
+    tags: ["Next.js 14", "Prisma", "Neon Postgres", "Octokit", "Slack API", "Auth.js"],
+    images: [
+      "/github-bot-1.png",
+      "/github-bot-2.png",
+      "/github-bot-3.png"
+    ],
+    githubLink: "https://github.com/Palash-oss/github-automation-bot",
+    liveLink: "https://github-event-b3z3.vercel.app/"
   }
 ];
 
-const CaseStudy: React.FC<{ project: Project }> = ({ project }) => {
+const CaseStudy: React.FC<{ project: Project; onOpenLightbox: (images: string[], index: number) => void }> = ({ project, onOpenLightbox }) => {
   const container = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -68,31 +78,29 @@ const CaseStudy: React.FC<{ project: Project }> = ({ project }) => {
   useEffect(() => {
     if (!container.current) return;
 
-    // GSAP ScrollTrigger animation
     const ctx = gsap.context(() => {
       gsap.from(contentRef.current, {
         scrollTrigger: {
           trigger: container.current,
-          start: "top 80%",
-          end: "top 30%",
+          start: "top 85%",
+          end: "top 40%",
           scrub: 1,
-          markers: false
         },
         opacity: 0,
-        y: 50,
+        y: 40,
         duration: 1
       });
 
       gsap.from(imageRef.current, {
         scrollTrigger: {
           trigger: imageRef.current,
-          start: "top 70%",
-          end: "top 20%",
+          start: "top 80%",
+          end: "top 30%",
           scrub: 1,
-          markers: false
         },
         opacity: 0,
-        scale: 0.95,
+        scale: 0.96,
+        y: 30,
         duration: 1
       });
     }, container);
@@ -101,72 +109,112 @@ const CaseStudy: React.FC<{ project: Project }> = ({ project }) => {
   }, []);
 
   return (
-    <div ref={container} className="relative w-full py-5 md:py-6 lg:py-8 px-4 sm:px-6 md:px-8 lg:px-12 border-b border-white/10 group">
-      <div ref={contentRef} className="flex flex-col gap-3 md:gap-4 lg:gap-5 mb-4 md:mb-5 lg:mb-6">
-        {/* Project Header */}
-        <div className="z-10 w-full max-w-full">
-          <span className="inline-block text-xs md:text-sm font-black tracking-widest text-blue-500 mb-1 md:mb-2 uppercase whitespace-nowrap overflow-hidden text-ellipsis">
-            Project // {project.id}
-          </span>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight md:leading-tight lg:leading-snug tracking-tight uppercase group-hover:italic transition-all duration-700 word-break hyphens-auto">
+    <div ref={container} className="relative w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-white/10 group">
+      <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Left Column: Project Header & Info */}
+        <div ref={contentRef} className="lg:col-span-5 space-y-6">
+          <div className="flex items-center gap-3">
+            <span className="mono text-xs font-bold px-3 py-1 rounded-full bg-white/5 border border-white/15 text-gray-300 uppercase tracking-widest">
+              PROJECT {project.id}
+            </span>
+            <span className="mono text-[11px] text-gray-500 uppercase tracking-wider">
+              {project.category}
+            </span>
+          </div>
+
+          <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight leading-tight text-white group-hover:text-zinc-300 transition-colors duration-500">
             {project.title}
           </h3>
-        </div>
 
-        {/* Description Section - Clipped properly */}
-        <div className="w-full lg:max-w-2xl flex items-start">
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 font-light leading-relaxed md:leading-relaxed lg:leading-relaxed tracking-normal break-words overflow-hidden">
+          <p className="text-gray-300 font-light leading-relaxed text-base sm:text-lg">
             {project.description}
           </p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="mono text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-gray-300 uppercase tracking-wider"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Action Links */}
+          <div className="pt-4 flex flex-wrap items-center gap-4">
+            {project.liveLink && (
+              <a
+                href={project.liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white text-black font-display font-bold text-xs uppercase tracking-widest hover:bg-zinc-200 transition-colors shadow-lg"
+                data-cursor="DEMO"
+              >
+                <ExternalLink size={18} />
+                <span>LIVE DEMO</span>
+              </a>
+            )}
+
+            <a
+              href={project.githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center gap-3 px-6 py-3 rounded-full font-display font-bold text-xs uppercase tracking-widest transition-colors shadow-lg ${
+                project.liveLink 
+                  ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+                  : 'bg-white text-black hover:bg-zinc-200'
+              }`}
+              data-cursor="GITHUB"
+            >
+              <Github size={18} />
+              <span>SOURCE CODE</span>
+            </a>
+          </div>
         </div>
-      </div>
 
-      {/* Swiper Image Carousel */}
-      <div ref={imageRef} className="relative w-full overflow-hidden rounded-md md:rounded-lg lg:rounded-xl mt-3 md:mt-4 lg:mt-5 shadow-2xl glass-card">
-        <Swiper
-          modules={[Navigation, Pagination]}
-          navigation={true}
-          pagination={{ clickable: true, dynamicBullets: true }}
-          autoHeight={true}
-          className="w-full"
-        >
-          {project.images.map((image, idx) => (
-            <SwiperSlide key={idx} className="w-full">
-              <img
-                src={image}
-                alt={`${project.title} - Slide ${idx + 1}`}
-                className="w-full h-auto object-cover block"
-                loading="eager"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {/* Overlay gradient (reduced to not darken image too much) */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-10" />
-
-        {/* Action Button (top-right) */}
-        <div className="absolute top-3 md:top-4 lg:top-6 right-3 md:right-4 lg:right-6 flex gap-3 z-20">
-          <a
-            href={project.githubLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white text-black flex items-center justify-center group/btn transform transition-transform hover:scale-110 active:scale-95 shadow-lg flex-shrink-0"
-            aria-label="Open project on GitHub"
-          >
-            <Github size={18} className="md:hidden" />
-            <Github size={20} className="hidden md:block lg:hidden" />
-            <Github size={24} className="hidden lg:block" />
-          </a>
-        </div>
-
-        {/* Floating Tags - Improved responsive */}
-        <div className="absolute top-2 md:top-3 lg:top-4 left-2 md:left-3 lg:left-4 flex flex-wrap gap-1.5 md:gap-2 lg:gap-2.5 z-10 max-w-[calc(100%-1rem)]">
-          {project.tags.map(tag => (
-            <span key={tag} className="text-[7px] md:text-[8px] lg:text-xs bg-black/50 backdrop-blur-sm border border-white/20 px-2 md:px-2.5 lg:px-3 py-1 rounded-full uppercase font-semibold text-white/70 whitespace-nowrap truncate">
-              {tag}
-            </span>
-          ))}
+        {/* Right Column: Interactive Image Carousel Card */}
+        <div ref={imageRef} className="lg:col-span-7">
+          <div className="relative rounded-2xl overflow-hidden glass-card border border-white/10 group/card shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              navigation={true}
+              pagination={{ clickable: true, dynamicBullets: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              className="w-full h-auto"
+            >
+              {project.images.map((imgUrl, idx) => (
+                <SwiperSlide key={idx} className="w-full">
+                  <div
+                    className="relative cursor-pointer overflow-hidden group/slide"
+                    onClick={() => onOpenLightbox(project.images, idx)}
+                    data-cursor="EXPAND"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`${project.title} - Preview ${idx + 1}`}
+                      className="w-full h-[320px] sm:h-[420px] object-cover object-top transition-transform duration-700 group-hover/slide:scale-105"
+                      loading="eager"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover/slide:opacity-30 transition-opacity" />
+                    
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpenLightbox(project.images, idx);
+                      }}
+                      className="absolute bottom-4 right-4 p-3 bg-black/60 backdrop-blur-md rounded-full border border-white/20 text-white hover:bg-white hover:text-black transition-all shadow-lg z-10"
+                      title="Expand screenshot"
+                      data-cursor="EXPAND"
+                    >
+                      <Maximize2 size={16} />
+                    </button>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
       </div>
     </div>
@@ -175,45 +223,132 @@ const CaseStudy: React.FC<{ project: Project }> = ({ project }) => {
 
 export const Projects: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [lightbox, setLightbox] = useState<{ isOpen: boolean; images: string[]; currentIndex: number }>({
+    isOpen: false,
+    images: [],
+    currentIndex: 0,
+  });
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
+  const openLightbox = (images: string[], index: number) => {
+    setLightbox({ isOpen: true, images, currentIndex: index });
+  };
 
-    const ctx = gsap.context(() => {
-      gsap.from('.projects-title', {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          end: "top 30%",
-          scrub: 1,
-          markers: false
-        },
-        opacity: 0,
-        x: -50,
-        duration: 1
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
+  const closeLightbox = useCallback(() => {
+    setLightbox(prev => ({ ...prev, isOpen: false }));
   }, []);
 
+  const nextImage = useCallback((e?: React.SyntheticEvent) => {
+    if (e) e.stopPropagation();
+    setLightbox(prev => ({ ...prev, currentIndex: (prev.currentIndex + 1) % prev.images.length }));
+  }, []);
+
+  const prevImage = useCallback((e?: React.SyntheticEvent) => {
+    if (e) e.stopPropagation();
+    setLightbox(prev => ({ ...prev, currentIndex: (prev.currentIndex - 1 + prev.images.length) % prev.images.length }));
+  }, []);
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lightbox.isOpen) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightbox.isOpen, closeLightbox, nextImage, prevImage]);
+
   return (
-    <div ref={sectionRef} id="works" className="w-full py-8 md:py-10 lg:py-12 px-4 sm:px-6 md:px-8 lg:px-12">
-      <div className="flex flex-col gap-2 md:gap-3 mb-6 md:mb-8 lg:mb-10">
-        <div className="text-xs md:text-sm font-black tracking-widest text-gray-500 uppercase whitespace-nowrap">
-          Selected Archive
+    <div ref={sectionRef} id="projects" className="w-full py-16 px-4 sm:px-6 lg:px-8">
+      {/* Header */}
+      <div className="flex flex-col space-y-4 mb-12">
+        <div className="flex items-center gap-2 text-gray-400 mono text-xs font-bold uppercase tracking-widest">
+          <Sparkles size={16} className="text-white" /> Selected Engineering Case Studies
         </div>
-        <h2 className="projects-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight leading-tight break-words">
-          THE WORKS
-          <span className="text-blue-500">.</span>
+        <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white">
+          THE WORKS<span className="text-gray-600">.</span>
         </h2>
       </div>
 
+      {/* Case Studies */}
       <div className="space-y-0 w-full">
         {projects.map((p) => (
-          <CaseStudy key={p.id} project={p} />
+          <CaseStudy key={p.id} project={p} onOpenLightbox={openLightbox} />
         ))}
       </div>
+
+      {/* Full-Screen Lightbox Portal */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {lightbox.isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeLightbox}
+              className="fixed inset-0 z-[500000] bg-[#030308]/98 flex items-center justify-center p-2 sm:p-6 select-none pointer-events-auto"
+            >
+              {/* Top Bar with Counter & Exit Button */}
+              <div className="fixed top-5 left-6 right-6 flex items-center justify-between z-[500010] pointer-events-auto">
+                <span className="mono text-xs text-white font-bold bg-zinc-900 px-4 py-2 rounded-full border border-white/20 shadow-lg">
+                  IMAGE {lightbox.currentIndex + 1} / {lightbox.images.length}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeLightbox();
+                  }}
+                  className="px-5 py-2.5 bg-white text-black font-display font-bold text-xs uppercase tracking-widest rounded-full hover:bg-zinc-200 transition-all shadow-2xl cursor-pointer pointer-events-auto z-[500010] flex items-center gap-2"
+                  aria-label="Close Preview"
+                  data-cursor="CLOSE"
+                >
+                  <span>CLOSE</span>
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Left Nav Arrow */}
+              <button
+                type="button"
+                onClick={prevImage}
+                className="fixed left-4 sm:left-8 top-1/2 -translate-y-1/2 p-4 bg-zinc-900/90 hover:bg-white hover:text-black rounded-full text-white transition-all duration-200 border border-white/30 z-[500010] shadow-2xl pointer-events-auto cursor-pointer"
+                aria-label="Previous Image"
+                data-cursor="PREV"
+              >
+                <ChevronLeft size={30} />
+              </button>
+
+              {/* Right Nav Arrow */}
+              <button
+                type="button"
+                onClick={nextImage}
+                className="fixed right-4 sm:right-8 top-1/2 -translate-y-1/2 p-4 bg-zinc-900/90 hover:bg-white hover:text-black rounded-full text-white transition-all duration-200 border border-white/30 z-[500010] shadow-2xl pointer-events-auto cursor-pointer"
+                aria-label="Next Image"
+                data-cursor="NEXT"
+              >
+                <ChevronRight size={30} />
+              </button>
+
+              {/* Crystal Clear Image Preview Container */}
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="relative max-w-[94vw] max-h-[90vh] flex items-center justify-center z-[500005] cursor-default"
+              >
+                <img
+                  src={lightbox.images[lightbox.currentIndex]}
+                  alt={`Project Preview ${lightbox.currentIndex + 1}`}
+                  className="max-w-[94vw] max-h-[88vh] w-auto h-auto object-contain rounded-xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.95)] block select-none"
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };

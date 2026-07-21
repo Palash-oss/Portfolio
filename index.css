@@ -1,0 +1,108 @@
+@import 'locomotive-scroll/dist/locomotive-scroll.css';
+
+:root {
+  --bg-primary: #050505;
+  --bg-secondary: #0a0a0c;
+  --accent-silver: #e4e4e7;
+  --accent-white: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide default cursor only on fine pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: none;
+  }
+  a, button, input, textarea, [role="button"] {
+    cursor: none !important;
+  }
+}
+
+h1, h2, h3, .font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.mono, code, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Classic Raw Hardware-Accelerated Glassmorphism */
+.glass-panel {
+  background: rgba(12, 12, 14, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateZ(0);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  transform: translateZ(0);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 45px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Raw Metallic Glow Utilities */
+.glow-white {
+  box-shadow: 0 0 35px -5px rgba(255, 255, 255, 0.2);
+}
+
+.text-silver-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #d4d4d8 50%, #71717a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-outline {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
+  color: transparent;
+  transition: all 0.5s ease;
+}
+
+.hero-outline:hover {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.08);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
