@@ -49,7 +49,7 @@ export const CustomCursor: React.FC = () => {
   }, [cursorX, cursorY]);
 
   return (
-    <>
+    <div className="hidden md:block">
       {/* Primary Inner Pointer */}
       <motion.div
         className="fixed top-0 left-0 w-3 h-3 bg-white rounded-full pointer-events-none z-[400001] shadow-[0_0_12px_rgba(255,255,255,0.9)] will-change-transform"
@@ -89,6 +89,6 @@ export const CustomCursor: React.FC = () => {
           </span>
         )}
       </motion.div>
-    </>
+    </div>
   );
 };

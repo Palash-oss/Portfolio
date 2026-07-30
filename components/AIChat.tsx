@@ -87,14 +87,14 @@ export const AIChat: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50">
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.85, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 30 }}
-            className="mb-6 w-[340px] sm:w-[400px] h-[540px] glass-panel rounded-3xl overflow-hidden flex flex-col shadow-[0_25px_70px_rgba(0,0,0,0.9)] border border-white/15"
+            className="mb-4 sm:mb-6 w-[calc(100vw-2rem)] max-w-[400px] h-[500px] sm:h-[540px] glass-panel rounded-3xl overflow-hidden flex flex-col shadow-[0_25px_70px_rgba(0,0,0,0.9)] border border-white/15"
           >
             {/* Header */}
             <div className="p-5 border-b border-white/10 flex items-center justify-between bg-black/40 backdrop-blur-2xl">

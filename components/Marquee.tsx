@@ -24,7 +24,7 @@ const techsRow2 = [
 
 export const Marquee: React.FC = () => {
   return (
-    <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-12 overflow-hidden border-y border-white/10 bg-black/40 backdrop-blur-md hover:bg-transparent hover:backdrop-blur-none transition-all duration-700 my-12 space-y-6 z-10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-none">
+    <div className="w-full relative py-12 overflow-hidden border-y border-white/10 bg-black/40 backdrop-blur-md hover:bg-transparent hover:backdrop-blur-none transition-all duration-700 my-12 space-y-6 z-10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-none rounded-3xl">
       {/* Edge Fade Gradients */}
       <div className="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none" />
       <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none" />
