@@ -1,17 +1,13 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Maximize2, X, ChevronLeft, ChevronRight, Sparkles, ExternalLink } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Project {
   id: string;
@@ -71,48 +67,17 @@ const projects: Project[] = [
 ];
 
 const CaseStudy: React.FC<{ project: Project; onOpenLightbox: (images: string[], index: number) => void }> = ({ project, onOpenLightbox }) => {
-  const container = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!container.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.from(contentRef.current, {
-        scrollTrigger: {
-          trigger: container.current,
-          start: "top 85%",
-          end: "top 40%",
-          scrub: 1,
-        },
-        opacity: 0,
-        y: 40,
-        duration: 1
-      });
-
-      gsap.from(imageRef.current, {
-        scrollTrigger: {
-          trigger: imageRef.current,
-          start: "top 80%",
-          end: "top 30%",
-          scrub: 1,
-        },
-        opacity: 0,
-        scale: 0.96,
-        y: 30,
-        duration: 1
-      });
-    }, container);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div ref={container} className="relative w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-white/10 group">
+    <div className="relative w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-white/10 group">
       <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Left Column: Project Header & Info */}
-        <div ref={contentRef} className="lg:col-span-5 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-5 space-y-6"
+        >
           <div className="flex items-center gap-3">
             <span className="mono text-xs font-bold px-3 py-1 rounded-full bg-white/5 border border-white/15 text-gray-300 uppercase tracking-widest">
               PROJECT {project.id}
@@ -172,10 +137,16 @@ const CaseStudy: React.FC<{ project: Project; onOpenLightbox: (images: string[],
               <span>SOURCE CODE</span>
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Column: Interactive Image Carousel Card */}
-        <div ref={imageRef} className="lg:col-span-7">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-7"
+        >
           <div className="relative rounded-2xl overflow-hidden glass-card border border-white/10 group/card shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
             <Swiper
               modules={[Navigation, Pagination, Autoplay]}
@@ -215,7 +186,7 @@ const CaseStudy: React.FC<{ project: Project; onOpenLightbox: (images: string[],
               ))}
             </Swiper>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
